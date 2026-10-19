@@ -1,0 +1,40 @@
+```mermaid
+flowchart TD
+    %% User and Ingestion Layer
+    Customer([Customer Complaint Input]) -->|Raw Text / Ticket| UI[Streamlit Interactive PoC Dashboard]
+    UI --> Orchestrator[ResolveFlow Multi-Agent Orchestrator]
+
+    %% Multi-Agent Collaborative System
+    subgraph MultiAgentSystem ["ResolveFlow Autonomous Agent System"]
+        Orchestrator --> TriagePlanner[1. Triage & Planner Agent]
+        TriagePlanner -->|Task Decomposition & Intent| OMSResearcher[2. OMS & Research Agent]
+        
+        OMSResearcher -->|Order, Tracking & Customer Profile| ResolutionExecutor[3. Resolution Executor Agent]
+        ResolutionExecutor -->|Preliminary Remedy Proposal| CriticAuditor[4. Critic & Fraud Auditor Agent]
+        
+        CriticAuditor -->|Policy & Abuse Evaluation| DecisionGate{Decision & Risk Gate}
+        
+        DecisionGate -->|Risk < 60 & Policy Compliant| CommAutomation[5. Communication & Automation Agent]
+        DecisionGate -->|Risk >= 60 OR Anomaly Flagged| HITLDesk[Human Fraud Supervisor Desk]
+        HITLDesk --> CommAutomation
+    end
+
+    %% Deterministic Tool Layer
+    subgraph ToolLayer ["Deterministic Tool Layer (Pure Python)"]
+        OMSResearcher -.-> ToolOMS[lookup_order]
+        OMSResearcher -.-> ToolTracking[lookup_carrier_tracking]
+        OMSResearcher -.-> ToolCust[lookup_customer]
+        
+        ResolutionExecutor -.-> ToolPolicy[evaluate_return_policy]
+        ResolutionExecutor -.-> ToolRefund[calculate_financial_remedy]
+        ResolutionExecutor -.-> ToolRMA[generate_logistics_action]
+        
+        CriticAuditor -.-> ToolFraud[assess_fraud_risk]
+        CommAutomation -.-> ToolWebhook[generate_erp_webhook_payload]
+    end
+
+    %% Enterprise Outputs
+    CommAutomation --> OutEmail([Customer Email / SMS Notification])
+    CommAutomation --> OutWebhook([Stripe / Shopify ERP Webhook Event])
+    CommAutomation --> OutAudit([Compliance Audit Dossier])
+```
