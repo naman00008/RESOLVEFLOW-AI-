@@ -3682,93 +3682,55 @@ elif active_tab == "Agent Operations":
     st.subheader("Architectural Benchmark: Single-Turn Chatbot vs. Autonomous Multi-Agent AI")
     st.markdown("Quantitative architectural comparison demonstrating how ResolveFlow overcomes single-turn prompt fragility, hallucinations, and fraudulent payout leakage.")
 
-    col_bench_chart, col_bench_matrix = st.columns([1.05, 1.35], gap="medium")
+    st.markdown("<div style='font-size: 0.86rem; font-weight: 700; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px;'>Enterprise Resilience Radar Benchmark</div>", unsafe_allow_html=True)
+    bench_cats = [
+        "Ground-Truth Binding",
+        "Policy Compliance",
+        "Fraud & Abuse Defense",
+        "Deterministic Math",
+        "ERP Webhook Integration"
+    ]
 
-    with col_bench_chart:
-        st.markdown("<div style='font-size: 0.86rem; font-weight: 700; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px;'>Enterprise Resilience Radar Benchmark</div>", unsafe_allow_html=True)
-        bench_cats = [
-            "Ground-Truth Binding",
-            "Policy Compliance",
-            "Fraud & Abuse Defense",
-            "Deterministic Math",
-            "ERP Webhook Integration"
-        ]
-
-        fig_radar = go.Figure()
-        fig_radar.add_trace(go.Scatterpolar(
-            r=[25, 30, 10, 35, 15],
-            theta=bench_cats,
-            fill="toself",
-            name="Single-Turn Chatbot",
-            line_color="#f43f5e",
-            fillcolor="rgba(244, 63, 94, 0.2)"
-        ))
-        fig_radar.add_trace(go.Scatterpolar(
-            r=[98, 100, 95, 99, 96],
-            theta=bench_cats,
-            fill="toself",
-            name="ResolveFlow Autonomous AI",
-            line_color="#14b8a6",
-            fillcolor="rgba(20, 184, 166, 0.25)"
-        ))
-        fig_radar.update_layout(
-            polar=dict(
-                bgcolor="rgba(17, 24, 39, 0.4)",
-                radialaxis=dict(
-                    visible=True,
-                    range=[0, 105],
-                    ticksuffix="%",
-                    gridcolor="#1e293b",
-                    tickfont=dict(size=10, color="#94a3b8")
-                ),
-                angularaxis=dict(
-                    tickfont=dict(size=11.5, family="DM Sans", color="#f8fafc")
-                )
+    fig_radar = go.Figure()
+    fig_radar.add_trace(go.Scatterpolar(
+        r=[25, 30, 10, 35, 15],
+        theta=bench_cats,
+        fill="toself",
+        name="Single-Turn Chatbot",
+        line_color="#f43f5e",
+        fillcolor="rgba(244, 63, 94, 0.2)"
+    ))
+    fig_radar.add_trace(go.Scatterpolar(
+        r=[98, 100, 95, 99, 96],
+        theta=bench_cats,
+        fill="toself",
+        name="ResolveFlow Autonomous AI",
+        line_color="#14b8a6",
+        fillcolor="rgba(20, 184, 166, 0.25)"
+    ))
+    fig_radar.update_layout(
+        polar=dict(
+            bgcolor="rgba(17, 24, 39, 0.4)",
+            radialaxis=dict(
+                visible=True,
+                range=[0, 105],
+                ticksuffix="%",
+                gridcolor="#1e293b",
+                tickfont=dict(size=10, color="#94a3b8")
             ),
-            showlegend=True,
-            legend=dict(orientation="h", yanchor="bottom", y=1.05, xanchor="center", x=0.5, font=dict(color="#cbd5e1", size=11)),
-            margin=dict(l=35, r=35, t=30, b=25),
-            height=340,
-            paper_bgcolor="rgba(0,0,0,0)"
-        )
+            angularaxis=dict(
+                tickfont=dict(size=11.5, family="DM Sans", color="#f8fafc")
+            )
+        ),
+        showlegend=True,
+        legend=dict(orientation="h", yanchor="bottom", y=1.05, xanchor="center", x=0.5, font=dict(color="#cbd5e1", size=11)),
+        margin=dict(l=35, r=35, t=30, b=25),
+        height=380,
+        paper_bgcolor="rgba(0,0,0,0)"
+    )
+    col_r1, col_r2, col_r3 = st.columns([0.15, 0.7, 0.15])
+    with col_r2:
         st.plotly_chart(fig_radar, width="stretch", config={"displayModeBar": False})
-
-    with col_bench_matrix:
-        st.markdown("<div style='font-size: 0.86rem; font-weight: 700; color: #cbd5e1; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px;'>Production Architecture Comparison</div>", unsafe_allow_html=True)
-
-        bench_html = (
-            "<div style='display: grid; grid-template-columns: 1fr 1fr; gap: 12px; box-sizing: border-box;'>"
-            "<div style='background: #1c1117; border: 1px solid #4c0519; border-top: 3px solid #f43f5e; border-radius: 10px; padding: 14px; box-sizing: border-box;'>"
-            "<div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;'>"
-            "<span style='font-size: 0.80rem; font-weight: 700; color: #fb7185; text-transform: uppercase;'>Legacy Chatbot</span>"
-            "<span style='font-size: 0.76rem; background: #2a0e17; color: #fb7185; padding: 2px 7px; border-radius: 4px; font-weight: 700;'>UNCONSTRAINED</span>"
-            "</div>"
-            "<div style='font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-bottom: 8px;'>Single-Turn LLM</div>"
-            "<div style='display: flex; flex-direction: column; gap: 8px; font-size: 0.86rem; color: #cbd5e1; line-height: 1.5;'>"
-            "<div><strong>Reasoning:</strong> Unconstrained autoregressive text generation with no state.</div>"
-            "<div><strong>Ground Truth:</strong> None; hallucinates facts based on customer claims.</div>"
-            "<div><strong>Policy Guardrail:</strong> Probabilistic; easily manipulated via prompt injection.</div>"
-            "<div><strong>Fraud Scoring:</strong> Zero fraud defense; blindly authorizes cash refunds.</div>"
-            "<div><strong>ERP Execution:</strong> Generates conversational promises without API dispatch.</div>"
-            "</div>"
-            "</div>"
-            "<div style='background: #091a1a; border: 1px solid #115e59; border-top: 3px solid #14b8a6; border-radius: 10px; padding: 14px; box-sizing: border-box;'>"
-            "<div style='display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 4px;'>"
-            "<span style='font-size: 0.80rem; font-weight: 700; color: #2dd4bf; text-transform: uppercase;'>ResolveFlow AI</span>"
-            "<span style='font-size: 0.76rem; background: #042f2e; color: #2dd4bf; padding: 2px 7px; border-radius: 4px; font-weight: 700;'>PRODUCTION</span>"
-            "</div>"
-            "<div style='font-size: 1.05rem; font-weight: 700; color: #f8fafc; margin-bottom: 8px;'>Autonomous Multi-Agent</div>"
-            "<div style='display: flex; flex-direction: column; gap: 8px; font-size: 0.86rem; color: #cbd5e1; line-height: 1.5;'>"
-            "<div><strong>Reasoning:</strong> 5-stage stateful orchestration with adversarial reflection gates.</div>"
-            "<div><strong>Ground Truth:</strong> Deterministic binding to live OMS records and courier GPS.</div>"
-            "<div><strong>Policy Guardrail:</strong> Mathematical statutory policy code (E-Commerce Rules 2020).</div>"
-            "<div><strong>Fraud Scoring:</strong> Multi-factor scoring (0-100) with mandatory HITL approval gates.</div>"
-            "<div><strong>ERP Execution:</strong> Dispatches cryptographically signed JSON webhooks to ERP.</div>"
-            "</div>"
-            "</div>"
-            "</div>"
-        )
-        st.markdown(bench_html, unsafe_allow_html=True)
 
     st.markdown("<div style='border-bottom: 1px solid #1e293b; margin: 1.5rem 0;'></div>", unsafe_allow_html=True)
     shootout_open = bool(top_action_clicked)
