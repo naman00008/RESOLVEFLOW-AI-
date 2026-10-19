@@ -22,6 +22,11 @@ __pycache__/
 .streamlit/secrets.toml
 .streamlit/credentials.toml
 
+# Environment variables & secrets
+.env
+.env.*
+!.env.example
+
 # Distribution / packaging
 build/
 dist/

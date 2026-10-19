@@ -91,5 +91,12 @@ class TestResolveFlowPipeline(unittest.TestCase):
         reply = client.chat_copilot("Why was this order flagged as high risk?", {}, [])
         self.assertIn("Risk", reply)
 
+    def test_llm_provider_keys_loaded(self):
+        from core.llm.llm_client import get_provider_key
+        groq_k = get_provider_key("groq")
+        gemini_k = get_provider_key("gemini")
+        self.assertTrue(groq_k.startswith("gsk_"))
+        self.assertTrue(len(gemini_k) > 10)
+
 if __name__ == "__main__":
     unittest.main()

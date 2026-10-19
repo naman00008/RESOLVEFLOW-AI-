@@ -4352,22 +4352,16 @@ elif active_tab == "LLM":
             prov_key, default_model = provider_map[provider_choice]
 
         with col_p2:
-            # Detect env key if available
-            env_key = ""
-            if prov_key == "gemini":
-                env_key = os.environ.get("GEMINI_API_KEY", os.environ.get("GOOGLE_API_KEY", ""))
-            elif prov_key == "groq":
-                env_key = os.environ.get("GROQ_API_KEY", "")
-            elif prov_key == "openai":
-                env_key = os.environ.get("OPENAI_API_KEY", "")
+            # Preload key from environment / .env / .streamlit/secrets.toml
+            env_key = llm_mod.get_provider_key(prov_key) if prov_key != "offline" else ""
 
             api_key_input = st.text_input(
-                "API Key (Optional / Preloaded from ENV)",
+                "API Key (Optional / Preloaded from ENV/Secrets)",
                 value=env_key,
                 type="password",
                 placeholder="Zero-key offline active. Enter key to connect live API..." if prov_key != "offline" else "No API key required for offline mode",
                 disabled=(prov_key == "offline"),
-                key="llm_api_key_field"
+                key=f"llm_api_key_field_{prov_key}"
             )
 
         with col_p3:

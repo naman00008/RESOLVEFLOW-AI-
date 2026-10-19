@@ -10,6 +10,59 @@ from typing import Dict, Any, List, Optional
 import requests
 
 
+def _load_dotenv_if_present():
+    """Lightweight zero-dependency .env loader."""
+    base_dir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+    env_file = os.path.join(base_dir, ".env")
+    if os.path.isfile(env_file):
+        try:
+            with open(env_file, "r", encoding="utf-8") as f:
+                for line in f:
+                    line = line.strip()
+                    if line and not line.startswith("#") and "=" in line:
+                        k, v = line.split("=", 1)
+                        k = k.strip()
+                        v = v.strip().strip("'\"")
+                        if k and k not in os.environ:
+                            os.environ[k] = v
+        except Exception:
+            pass
+
+_load_dotenv_if_present()
+
+
+def get_provider_key(provider: str) -> str:
+    """Retrieves API key for a given provider from environment or Streamlit secrets."""
+    provider = provider.lower()
+    
+    # 1. Environment variables
+    key = ""
+    if provider == "gemini":
+        key = os.environ.get("GEMINI_API_KEY", os.environ.get("GOOGLE_API_KEY", ""))
+    elif provider == "groq":
+        key = os.environ.get("GROQ_API_KEY", "")
+    elif provider == "openai":
+        key = os.environ.get("OPENAI_API_KEY", "")
+        
+    if key:
+        return key
+
+    # 2. Streamlit secrets
+    try:
+        import streamlit as st
+        if hasattr(st, "secrets"):
+            if provider == "gemini":
+                key = st.secrets.get("GEMINI_API_KEY", st.secrets.get("GOOGLE_API_KEY", ""))
+            elif provider == "groq":
+                key = st.secrets.get("GROQ_API_KEY", "")
+            elif provider == "openai":
+                key = st.secrets.get("OPENAI_API_KEY", "")
+    except Exception:
+        pass
+
+    return key or ""
+
+
 class LLMConfig:
     """Configuration dataclass for LLM provider settings."""
     def __init__(
@@ -35,13 +88,7 @@ class LLMConfig:
         self.model = model or default_models.get(self.provider, "resolveflow-neural-offline")
 
     def _detect_env_key(self, provider: str) -> Optional[str]:
-        if provider == "gemini":
-            return os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
-        elif provider == "groq":
-            return os.environ.get("GROQ_API_KEY")
-        elif provider == "openai":
-            return os.environ.get("OPENAI_API_KEY")
-        return None
+        return get_provider_key(provider) or None
 
     def is_active(self) -> bool:
         if self.provider == "offline":
@@ -84,32 +131,40 @@ class LLMClient:
         return res
 
     def _call_gemini(self, prompt: str, system_prompt: str) -> Dict[str, Any]:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.config.model}:generateContent?key={self.config.api_key}"
-        payload = {
-            "contents": [{"parts": [{"text": prompt}]}],
-            "generationConfig": {
-                "temperature": self.config.temperature,
-                "maxOutputTokens": self.config.max_tokens,
-            }
-        }
-        if system_prompt:
-            payload["system_instruction"] = {"parts": [{"text": system_prompt}]}
+        models_to_try = [self.config.model]
+        for fallback_m in ["gemini-3-flash-preview", "gemini-flash-latest", "gemini-3.8-flash"]:
+            if fallback_m not in models_to_try:
+                models_to_try.append(fallback_m)
 
-        try:
-            resp = requests.post(url, json=payload, headers={"Content-Type": "application/json"}, timeout=12)
-            if resp.status_code == 200:
-                data = resp.json()
-                text = data["candidates"][0]["content"]["parts"][0]["text"]
-                return {"text": text, "status": "success", "error": None}
-            else:
-                err_msg = f"Gemini API returned status {resp.status_code}: {resp.text[:150]}"
-                fallback = self._call_offline(prompt, system_prompt)
-                fallback["fallback_notice"] = f"{err_msg}. Switched to Offline Engine."
-                return fallback
-        except Exception as e:
-            fallback = self._call_offline(prompt, system_prompt)
-            fallback["fallback_notice"] = f"Gemini connection error ({str(e)[:80]}). Switched to Offline Engine."
-            return fallback
+        last_error = None
+        for model in models_to_try:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent?key={self.config.api_key}"
+            payload = {
+                "contents": [{"parts": [{"text": prompt}]}],
+                "generationConfig": {
+                    "temperature": self.config.temperature,
+                    "maxOutputTokens": self.config.max_tokens,
+                }
+            }
+            if system_prompt:
+                payload["system_instruction"] = {"parts": [{"text": system_prompt}]}
+
+            try:
+                resp = requests.post(url, json=payload, headers={"Content-Type": "application/json"}, timeout=12)
+                if resp.status_code == 200:
+                    data = resp.json()
+                    candidates = data.get("candidates", [])
+                    if candidates and "content" in candidates[0]:
+                        text = candidates[0]["content"]["parts"][0]["text"]
+                        self.config.model = model
+                        return {"text": text, "status": "success", "error": None, "model": model}
+                last_error = f"Gemini ({model}) returned status {resp.status_code}: {resp.text[:120]}"
+            except Exception as e:
+                last_error = f"Gemini ({model}) connection error ({str(e)[:80]})"
+
+        fallback = self._call_offline(prompt, system_prompt)
+        fallback["fallback_notice"] = f"{last_error}. Switched to Offline Engine."
+        return fallback
 
     def _call_groq(self, prompt: str, system_prompt: str) -> Dict[str, Any]:
         url = "https://api.groq.com/openai/v1/chat/completions"
@@ -122,28 +177,33 @@ class LLMClient:
             messages.append({"role": "system", "content": system_prompt})
         messages.append({"role": "user", "content": prompt})
 
-        payload = {
-            "model": self.config.model or "llama-3.3-70b-versatile",
-            "messages": messages,
-            "temperature": self.config.temperature,
-            "max_tokens": self.config.max_tokens
-        }
+        models_to_try = [self.config.model or "llama-3.3-70b-versatile"]
+        for fallback_m in ["qwen/qwen3.8-27b", "openai/gpt-oss-20b", "llama-3.3-70b-versatile"]:
+            if fallback_m not in models_to_try:
+                models_to_try.append(fallback_m)
 
-        try:
-            resp = requests.post(url, json=payload, headers=headers, timeout=12)
-            if resp.status_code == 200:
-                data = resp.json()
-                text = data["choices"][0]["message"]["content"]
-                return {"text": text, "status": "success", "error": None}
-            else:
-                err_msg = f"Groq API returned status {resp.status_code}: {resp.text[:150]}"
-                fallback = self._call_offline(prompt, system_prompt)
-                fallback["fallback_notice"] = f"{err_msg}. Switched to Offline Engine."
-                return fallback
-        except Exception as e:
-            fallback = self._call_offline(prompt, system_prompt)
-            fallback["fallback_notice"] = f"Groq connection error ({str(e)[:80]}). Switched to Offline Engine."
-            return fallback
+        last_error = None
+        for model in models_to_try:
+            payload = {
+                "model": model,
+                "messages": messages,
+                "temperature": self.config.temperature,
+                "max_tokens": self.config.max_tokens
+            }
+            try:
+                resp = requests.post(url, json=payload, headers=headers, timeout=12)
+                if resp.status_code == 200:
+                    data = resp.json()
+                    text = data["choices"][0]["message"]["content"]
+                    self.config.model = model
+                    return {"text": text, "status": "success", "error": None, "model": model}
+                last_error = f"Groq ({model}) returned status {resp.status_code}: {resp.text[:120]}"
+            except Exception as e:
+                last_error = f"Groq ({model}) connection error ({str(e)[:80]})"
+
+        fallback = self._call_offline(prompt, system_prompt)
+        fallback["fallback_notice"] = f"{last_error}. Switched to Offline Engine."
+        return fallback
 
     def _call_openai(self, prompt: str, system_prompt: str) -> Dict[str, Any]:
         url = "https://api.openai.com/v1/chat/completions"
