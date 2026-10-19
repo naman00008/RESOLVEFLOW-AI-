@@ -108,10 +108,10 @@ Open your browser to `http://localhost:8501`.
 - [x] **Agent Roles, Responsibilities & Orchestration**: 5 modular agents under `core/agents/`.
 - [x] **Architecture Diagram**: Mermaid and graphical diagrams in `docs/` and Streamlit.
 - [x] **Working Streamlit PoC**: Interactive web dashboard (`app.py`) with live agent traces.
-- [x] **Output Validation & Test Suite**: Unit tests passing 9/9 in `tests/test_pipeline.py` (covering multi-agent pipeline and LLM studio).
+- [x] **Output Validation & Test Suite**: Unit tests passing 10/10 in `tests/test_pipeline.py` (covering multi-agent pipeline, provider credentials, and LLM studio).
 - [x] **PowerPoint Presentation Deck**: Programmatically generated 8-slide deck (`ResolveFlow_AI_Presentation.pptx`).
 - [x] **5-Minute Timed Presentation Script**: Full speaker script in `docs/presentation_script.md`.
-- [x] **Zero Paid API Requirement**: Runs 100% locally and reliably out-of-the-box (with optional live Gemini, Groq, and OpenAI cloud connections).
+- [x] **Zero Paid API Requirement**: Runs 100% locally and reliably out-of-the-box (with optional live Google Gemini and Groq Cloud connections).
 - [x] **Multi-Provider LLM Studio**: Dedicated LLM Intelligence tab featuring Supervisor Copilot, Dynamic Intent & Tone Synthesis, and Adversarial Prompt Defense.
 
 ---

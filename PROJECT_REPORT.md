@@ -18,7 +18,7 @@ Unlike single-turn conversational chatbots that merely generate text, ResolveFlo
 E-commerce retail platforms (e.g., Amazon, Flipkart, Shopify direct-to-consumer merchants) process millions of customer support interactions annually. The operational domain involves a tightly coupled intersection of:
 - **Customer Relationship Management (CRM)**: Sentiment management, churn reduction, loyalty tiers.
 - **Order Management Systems (OMS)**: Transaction history, SKU specifications, payment records.
-- **Logistics & Third-Party Carriers**: Carrier tracking milestones (FedEx, DHL, UPS, BlueDart).
+- **Logistics & Third-Party Carriers**: Carrier tracking milestones (BlueDart, Delhivery, DTDC, Shadowfax).
 - **Institutional Compliance**: Category-specific return policies, sanitary/health laws (FDA non-returnable hygiene rules), and financial restocking deductions.
 
 #### 1.2 The Existing Business Challenge
@@ -26,7 +26,7 @@ Current e-commerce customer service workflows suffer from four major inefficienc
 1. **Prolonged Support Backlogs**: Tier-1 human customer support queues experience average response times of 12 to 48 hours. Long resolution cycles directly drive customer dissatisfaction and negative social media sentiment.
 2. **The Frustration of Static Chatbots**: Existing rule-based or basic RAG chatbots provide canned responses. They lack the autonomous agency to query backend order databases, inspect carrier GPS tracking logs, compute prorated refunds, or schedule reverse pickups.
 3. **Inconsistent Policy Application**: Human support agents frequently misapply return window rules, either granting unapproved refunds (causing company financial leakage) or improperly denying legitimate claims (damaging customer retention).
-4. **The \$100 Billion Return & Policy Fraud Crisis**: Organized retail abuse—such as serial returners, wardrobing, and false "Item Not Received" (INR) claims—causes retailers over \$100 billion in annual losses. Manual agents lack instantaneous behavioral scoring models to catch repeat offenders.
+4. **The ₹8,000 Crore+ Return & Policy Fraud Crisis**: Organized retail abuse—such as serial returners, wardrobing, and false "Item Not Received" (INR) claims—causes retailers over ₹8,000 Crores in domestic losses ($100+ billion globally). Manual agents lack instantaneous behavioral scoring models to catch repeat offenders.
 
 #### 1.3 The Proposed Solution: ResolveFlow AI
 ResolveFlow AI replaces passive conversational chatbots with an autonomous, collaborative multi-agent architecture. The system:
@@ -117,11 +117,11 @@ The system was evaluated against five representative e-commerce edge cases:
 
 | Scenario # | Test Case Description | Customer Tier | Order Value | Fraud Risk | Final System Verdict | Action Executed |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Scenario 1** | Defective audio on headphones delivered 2 days ago (within 7-day window). | Standard (`CUST-101`) | \$269.99 | Low (10/100) | `REPLACEMENT` | Auto-approved replacement; generated reverse pickup RMA label. |
-| **Scenario 2** | Espresso machine stalled in transit with DHL for 6 days past promised date. | Silver (`CUST-102`) | \$360.59 | Low (15/100) | `DELAY_COMPENSATION` | Expedited carrier trace opened; \$25 store compensation credit awarded. |
-| **Scenario 3** | Unsealed anti-aging serum returned after 38 days (non-returnable hygiene item). | Standard (`CUST-103`) | \$101.66 | Low (5/100) | `POLICY_REFUSAL_GOODWILL_COUPON` | Cash refund refused per FDA policy; 15% goodwill store credit coupon issued. |
-| **Scenario 4** | \$1,600 laptop claimed stolen / box empty. Customer has 66.7% return rate; carrier verified signature. | High Risk (`CUST-104`) | \$1,618.92 | Critical (88/100) | `ESCALATED_TO_HUMAN_SUPERVISOR` | **CRITIC OVERRULED**: Automated refund halted; case escalated to Senior Fraud Desk. |
-| **Scenario 5** | Platinum VIP customer shipped wrong shoe size (EU 40 instead of EU 42). | Platinum VIP (`CUST-105`) | \$410.40 | Very Low (0/100) | `VIP_EXPEDITED_EXCHANGE` | White-glove concierge courier exchange; all return fees waived. |
+| **Scenario 1** | Defective audio on headphones delivered 2 days ago (within 7-day window). | Standard (`CUST-101`) | ₹24,999 | Low (10/100) | `REPLACEMENT` | Auto-approved replacement; generated reverse pickup RMA label. |
+| **Scenario 2** | Espresso machine stalled in transit with Delhivery for 6 days past promised date. | Silver (`CUST-102`) | ₹45,999 | Low (15/100) | `DELAY_COMPENSATION` | Expedited carrier trace opened; ₹500 store compensation credit awarded. |
+| **Scenario 3** | Unsealed anti-aging serum returned after 38 days (non-returnable hygiene item). | Standard (`CUST-103`) | ₹8,499 | Low (5/100) | `POLICY_REFUSAL_GOODWILL_COUPON` | Cash refund refused per hygiene policy; 15% goodwill store credit coupon issued. |
+| **Scenario 4** | ₹1.76L laptop claimed stolen / box empty. Customer has 66.7% return rate; carrier verified signature. | High Risk (`CUST-104`) | ₹1,76,988 | Critical (88/100) | `ESCALATED_TO_HUMAN_SUPERVISOR` | **CRITIC OVERRULED**: Automated refund halted; case escalated to Senior Fraud Desk. |
+| **Scenario 5** | Platinum VIP customer shipped wrong shoe size (EU 40 instead of EU 42). | Platinum VIP (`CUST-105`) | ₹32,499 | Very Low (0/100) | `VIP_EXPEDITED_EXCHANGE` | White-glove concierge courier exchange; all return fees waived. |
 
 ---
 

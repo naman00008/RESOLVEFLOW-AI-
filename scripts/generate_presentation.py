@@ -95,7 +95,7 @@ def create_deck(output_filename="ResolveFlow_AI_Presentation.pptx"):
     info_box = slide1.shapes.add_textbox(Inches(1.0), Inches(5.8), Inches(11.333), Inches(1.0))
     tf_info = info_box.text_frame
     p_info = tf_info.paragraphs[0]
-    p_info.text = "Project Team / Presenter(s): Candidate Student Team | Date: October 2026 | Technology: Python, Streamlit, Multi-Agent State Machine"
+    p_info.text = "Project Team: Naman Vyas (@naman00008) & Akshita Mishra (@amakshita0506-dot) | Date: October 2026 | Technology: Python, Streamlit, Multi-Agent State Machine"
     p_info.font.size = Pt(12)
     p_info.font.color.rgb = COLOR_MUTED
 

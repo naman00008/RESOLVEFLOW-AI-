@@ -19,7 +19,7 @@
   > *Existing solutions suffer from three fatal inefficiencies:*  
   > *1. **Slow Human Triage**: Response times average 12 to 48 hours, causing customer churn.*  
   > *2. **Static Chatbots Fail**: Rule-based or generic LLM chatbots cannot query backend Order Management Systems (OMS), check real-time carrier GPS logs, calculate restocking fees, or generate reverse pickup shipping labels.*  
-  > *3. **The \$100B Fraud Problem**: Retailers lose over \$100 billion annually to return fraud and false 'empty package' claims because human agents lack real-time abuse scoring and carrier signature cross-checks."*
+  > *3. **The ₹8,000 Crore+ Fraud Crisis**: Retailers lose over ₹8,000 Crores annually in India to return fraud and false 'empty package' claims because human agents lack real-time abuse scoring and carrier signature cross-checks."*
 
 ---
 
@@ -34,7 +34,7 @@
 - **Presenter 1**:
   > *"Our system coordinates five distinct cognitive agents alongside a deterministic tool layer:*  
   > *1. The **Triage & Planner Agent** deconstructs incoming customer messages, identifies the order ID, assesses emotional sentiment and urgency, and outlines a dynamic 4-step milestone plan.*  
-  > *2. The **OMS & Research Agent** pulls ground-truth telemetry from the Order Management System, customer purchase history, and live carrier tracking APIs (FedEx, DHL, UPS).*  
+  > *2. The **OMS & Research Agent** pulls ground-truth telemetry from the Order Management System, customer purchase history, and live carrier tracking APIs (BlueDart, Delhivery, DTDC, Shadowfax).*  
   > *3. The **Resolution Executor Agent** applies deterministic business rules: verifying category return windows, calculating refunds or restocking fees, and checking replacement inventory.*  
   > *4. The **Critic & Fraud Auditor Agent** acts as an internal reflection gate. It calculates a multi-factor abuse score (0 to 100) and cross-checks the executor's proposal against institutional policies.*  
   > *5. The **Communication & Automation Agent** drafts empathetic, personalized messages and emits transactional webhooks to Stripe and warehouse ERPs."*
@@ -46,7 +46,7 @@
   > *"Here is how these agents collaborate in our orchestration state machine.*  
   > *Notice the critical innovation: **The Critic Reflection Gate**.*  
   > *If an executor attempts to refund an unsealed cosmetic item that violates health regulations, the Critic Agent overrules the decision and converts it to a polite policy refusal with a goodwill coupon.*  
-  > *Even more importantly, if a customer with a high return velocity claims a \$1,600 laptop was stolen despite carrier direct-signature verification, the Critic Agent detects a Critical Risk Score (88/100), halts automated payout, and routes the dossier to a Human Fraud Supervisor. This provides 100% enterprise trust."*
+  > *Even more importantly, if a customer with a high return velocity claims a ₹1.76L laptop was stolen despite carrier direct-signature verification, the Critic Agent detects a Critical Risk Score (88/100), halts automated payout, and routes the dossier to a Human Fraud Supervisor. This provides 100% enterprise trust."*
 
 ---
 
@@ -55,9 +55,9 @@
   > *[Demonstrate live Streamlit UI or point to slide]*  
   > *"We validated our PoC across five diverse benchmark scenarios:*  
   > *- In **Scenario 1**, a legitimate defective headphone within the 7-day window receives an auto-approved replacement with an instant reverse pickup RMA label.*  
-  > *- In **Scenario 2**, a delayed espresso machine triggers a carrier trace and automated \$25 store compensation credit.*  
+  > *- In **Scenario 2**, a delayed espresso machine triggers a carrier trace and automated ₹500 store compensation credit.*  
   > *- In **Scenario 3**, an unsealed cosmetic returned after 38 days is politely refused under FDA hygiene rules, but rewarded with a 15% goodwill coupon.*  
-  > *- In **Scenario 4**, our Critic Agent catches a serial returner anomaly, preventing a \$1,600 improper payout.*  
+  > *- In **Scenario 4**, our Critic Agent catches a serial returner anomaly, preventing a ₹1,76,988 improper payout.*  
   > *- In **Scenario 5**, our Platinum VIP customer receives white-glove courier exchange with zero friction.*  
   > *All of this runs in under 100 milliseconds locally with zero paid API overhead."*
 
