@@ -3231,29 +3231,44 @@ elif active_tab == "Agent Operations":
 <head>
 <meta charset="utf-8">
 <style>
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
     margin: 0;
-    padding: 0;
+    padding: 8px 12px;
     background: transparent;
     overflow-x: auto;
     overflow-y: hidden;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    display: flex;
+    justify-content: center;
+  }
+  .svg-canvas-wrapper {
+    width: 100%;
+    max-width: 1180px;
+    min-width: 1050px;
+  }
+  svg {
+    width: 100%;
+    height: auto;
+    display: block;
+    background: #090d16;
+    border: 1px solid #1e293b;
+    border-radius: 14px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.35);
   }
   @keyframes dashStream {
     to { stroke-dashoffset: -32; }
   }
   @keyframes pulseGlow {
-    0%, 100% { opacity: 0.75; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.15); }
+    0%, 100% { opacity: 0.45; }
+    50% { opacity: 1; }
   }
   .flow-dash {
     stroke-dasharray: 6 5;
     animation: dashStream 1.2s linear infinite;
   }
   .live-beacon {
-    animation: pulseGlow 2s ease-in-out infinite;
-    transform-origin: center;
+    animation: pulseGlow 1.8s ease-in-out infinite;
   }
   .node-card {
     transition: transform 0.15s ease, filter 0.15s ease;
@@ -3265,32 +3280,9 @@ elif active_tab == "Agent Operations":
 </style>
 </head>
 <body>
-<div style="width: 100%; min-width: 1180px; padding: 2px 2px 8px 2px;">
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 470" width="100%" height="auto" style="background: #090d16; border: 1px solid #1e293b; border-radius: 14px; box-shadow: 0 4px 20px rgba(0,0,0,0.3); display: block;">
+<div class="svg-canvas-wrapper">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1180 480" width="100%" height="auto">
       <defs>
-        <style>
-          @keyframes dashStream {
-            to { stroke-dashoffset: -32; }
-          }
-          @keyframes pulseGlow {
-            0%, 100% { opacity: 0.75; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.15); }
-          }
-          .flow-dash {
-            stroke-dasharray: 6 5;
-            animation: dashStream 1.2s linear infinite;
-          }
-          .live-beacon {
-            animation: pulseGlow 2s ease-in-out infinite;
-            transform-origin: center;
-          }
-          .node-card {
-            transition: transform 0.15s ease, filter 0.15s ease;
-          }
-          .node-card:hover {
-            filter: brightness(1.08) drop-shadow(0 4px 12px rgba(0,0,0,0.5));
-          }
-        </style>
         
         <marker id="arr-gray" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
           <path d="M 0 1.5 L 8 5 L 0 8.5 z" fill="#94a3b8" />
@@ -3582,7 +3574,7 @@ elif active_tab == "Agent Operations":
 </div>
 </body>
 </html>"""
-    components.html(workflow_html, height=500, scrolling=True)
+    components.html(workflow_html, height=530, scrolling=True)
 
 
 
