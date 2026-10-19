@@ -1268,7 +1268,7 @@ header_configs = {
     },
     "LLM": {
         "title": "LLM Intelligence Studio",
-        "subtitle": "Multi-provider LLM studio (Gemini, Groq, OpenAI & Offline Engine) with live copilot chat, dynamic triage, and adversarial injection defense.",
+        "subtitle": "Multi-provider LLM studio (Google Gemini, Groq Cloud & Offline Engine) with live copilot chat, dynamic triage, and adversarial injection defense.",
         "primary_label": "Run LLM Triage"
     }
 }
@@ -4321,7 +4321,7 @@ elif active_tab == "LLM":
             Multi-Provider Foundation Model Studio
         </div>
         <div style='font-size: 0.88rem; color: #94a3b8; line-height: 1.5;'>
-            Connect live cloud models (Google Gemini, Groq Cloud, OpenAI) or leverage the zero-dependency Offline Local Engine. Power intelligent incident copilots, dynamic natural language triage, and adversarial prompt injection defenses.
+            Connect live cloud models (Google Gemini, Groq Cloud) or leverage the zero-dependency Offline Local Engine. Power intelligent incident copilots, dynamic natural language triage, and adversarial prompt injection defenses.
         </div>
     </div>
     """, unsafe_allow_html=True)
@@ -4336,8 +4336,7 @@ elif active_tab == "LLM":
                 options=[
                     "Offline Intelligence Engine (Zero-Key)",
                     "Google Gemini (Gemini 2.5 Flash)",
-                    "Groq Cloud (Llama 3.3 70B)",
-                    "OpenAI (GPT-4o-mini)"
+                    "Groq Cloud (Llama 3.3 70B)"
                 ],
                 index=0,
                 key="llm_provider_select"
@@ -4346,8 +4345,7 @@ elif active_tab == "LLM":
             provider_map = {
                 "Offline Intelligence Engine (Zero-Key)": ("offline", "resolveflow-neural-offline"),
                 "Google Gemini (Gemini 2.5 Flash)": ("gemini", "gemini-2.5-flash"),
-                "Groq Cloud (Llama 3.3 70B)": ("groq", "llama-3.3-70b-versatile"),
-                "OpenAI (GPT-4o-mini)": ("openai", "gpt-4o-mini")
+                "Groq Cloud (Llama 3.3 70B)": ("groq", "llama-3.3-70b-versatile")
             }
             prov_key, default_model = provider_map[provider_choice]
 
