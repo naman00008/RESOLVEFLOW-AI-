@@ -1233,7 +1233,7 @@ with st.container():
     with col_nav:
         nav_options = [
             "Operations",
-            "Incident Explorer",
+            "Order & Telemetry Dossier",
             "Agent Operations",
             "LLM"
         ]
@@ -1256,8 +1256,8 @@ header_configs = {
         "subtitle": "Real-time customer complaint triage, 5-agent autonomous pipeline, and instant resolution execution.",
         "primary_label": "Run Triage"
     },
-    "Incident Explorer": {
-        "title": "Incident Explorer & Executive Intelligence",
+    "Order & Telemetry Dossier": {
+        "title": "Order & Telemetry Dossier",
         "subtitle": "Authoritative order dossiers, live carrier waybill telemetry, resolution funnel, and enterprise unit economics.",
         "primary_label": "Export Slide Deck"
     },
@@ -1803,7 +1803,7 @@ if active_tab == "Operations":
                     language="json"
                 )
 
-elif active_tab == "Incident Explorer":
+elif active_tab == "Order & Telemetry Dossier":
     # --------------------------------------------------------------------------
     # 1. Universal 360° Order & Incident Telemetry Inspector
     # --------------------------------------------------------------------------
