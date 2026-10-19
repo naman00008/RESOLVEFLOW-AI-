@@ -1,0 +1,28 @@
+# Python virtual environment
+.venv/
+env/
+venv/
+ENV/
+
+# Byte-compiled / optimized files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# IDEs
+.vscode/
+.idea/
+
+# Streamlit runtime / cache (keep config.toml if any)
+.streamlit/secrets.toml
+.streamlit/credentials.toml
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
