@@ -1215,7 +1215,7 @@ if "supervisor_override" not in st.session_state:
 # Top Command Center Navigation Bar (Pixel-Matched to Reference Layout)
 # ==============================================================================
 with st.container():
-    col_brand, col_nav, col_status = st.columns([2.6, 6.2, 1.2], vertical_alignment="center")
+    col_brand, col_nav = st.columns([2.8, 7.2], vertical_alignment="center")
     with col_brand:
         st.markdown("""
         <div style='display: flex; align-items: center; gap: 12px;'>
@@ -1246,16 +1246,6 @@ with st.container():
         )
         if not active_tab:
             active_tab = "Operations"
-            
-    with col_status:
-        st.markdown("""
-        <div style='display: flex; justify-content: flex-end;'>
-            <div style='display: inline-flex; align-items: center; gap: 8px; background: #111827; border: 1px solid #1e293b; padding: 7px 16px; border-radius: 9999px; font-size: 0.86rem; font-weight: 600; color: #f8fafc; box-shadow: 0 1px 3px rgba(0,0,0,0.3);'>
-                <span style='width: 9px; height: 9px; border-radius: 50%; background-color: #10b981; box-shadow: 0 0 6px rgba(16, 185, 129, 0.6); display: inline-block;'></span>
-                Backend Live
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
 
 st.markdown("<div style='border-bottom: 1px solid #1e293b; margin: 0.6rem 0 1.2rem 0;'></div>", unsafe_allow_html=True)
 
