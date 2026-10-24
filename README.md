@@ -112,7 +112,7 @@ Open your browser to `http://localhost:8501`.
 - [x] **PowerPoint Presentation Deck**: Programmatically generated 8-slide deck (`ResolveFlow_AI_Presentation.pptx`).
 - [x] **5-Minute Timed Presentation Script**: Full speaker script in `docs/presentation_script.md`.
 - [x] **Zero Paid API Requirement**: Runs 100% locally and reliably out-of-the-box (with optional live Google Gemini and Groq Cloud connections).
-- [x] **Multi-Provider LLM Studio**: Dedicated LLM Intelligence tab featuring Supervisor Copilot, Dynamic Intent & Tone Synthesis, and Adversarial Prompt Defense.
+- [x] **Multi-Provider LLM Engine**: Zero-dependency local engine with multi-provider cloud support (Google Gemini & Groq Cloud), dynamic triage, and adversarial prompt defense testing.
 
 ---
 
